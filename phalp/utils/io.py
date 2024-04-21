@@ -45,6 +45,7 @@ class IO_Manager():
 
         if(source_path.endswith(".mp4")):
             if not os.path.exists(source_path):
+                print(f"!!!!! Video file does not exist: {source_path}")
                 raise Exception(f"Video file does not exist: {source_path}")
 
             # find a proper video name based on the source path
