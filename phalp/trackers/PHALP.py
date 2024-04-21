@@ -120,7 +120,8 @@ class PHALP(nn.Module):
         
     def setup_visualizer(self):
         log.info("Setting up Visualizer...")
-        self.visualizer = Visualizer(self.cfg, self.HMAR)
+        # self.visualizer = Visualizer(self.cfg, self.HMAR)
+        self.visualizer = None
     
     def setup_postprocessor(self):
         # by default this will not be initialized
