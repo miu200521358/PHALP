@@ -127,7 +127,8 @@ class TraceFrameExtractor:
         self.vid_cap.set(cv2.CAP_PROP_POS_FRAMES, frame_id)
         ret, frame = self.vid_cap.read()
         if not ret:
-            raise Exception("Failed to read frame")
+            # log.error(f"!!!!! Frame {frame_id} could not be read.")
+            return np.array([])
         return np.array(frame)
 
     def get_video_duration(self):

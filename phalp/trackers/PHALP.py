@@ -180,6 +180,8 @@ class PHALP(nn.Module):
             for t_, frame_name in progress_bar(enumerate(list_of_frames), description="Tracking : " + self.cfg.video_seq, total=len(list_of_frames), disable=False):
                 
                 image_frame               = self.io_manager.read_frame(frame_name)
+                if not image_frame.any():
+                    break
                 img_height, img_width, _  = image_frame.shape
                 new_image_size            = max(img_height, img_width)
                 top, left                 = (new_image_size - img_height)//2, (new_image_size - img_width)//2,
@@ -212,7 +214,7 @@ class PHALP(nn.Module):
                 
                 ############ record the track states (history and predictions) ##############
                 for tracks_ in self.tracker.tracks:
-                    if(frame_name not in tracked_frames): tracked_frames.append(frame_name)
+                    tracked_frames.append(frame_name)
                     if(not(tracks_.is_confirmed())): continue
                     
                     track_id        = tracks_.track_id
