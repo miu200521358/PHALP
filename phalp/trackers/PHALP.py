@@ -25,7 +25,7 @@ from phalp.external.deep_sort_.tracker import Tracker
 from phalp.models.hmar import HMAR
 from phalp.models.predictor import Pose_transformer_v2
 from phalp.utils import get_pylogger
-from phalp.utils.io import IO_Manager
+from phalp.utils.trace_io import Trace_IO_Manager
 from phalp.utils.utils import (convert_pkl, get_prediction_interval,
                                progress_bar, smpl_to_pose_camera_vector)
 from phalp.utils.utils_dataset import process_image, process_mask
@@ -44,7 +44,7 @@ class PHALP(nn.Module):
 
         self.cfg = cfg
         self.device = torch.device(self.cfg.device)
-        self.io_manager = IO_Manager(self.cfg)
+        self.io_manager = Trace_IO_Manager(self.cfg)
 
         # download wights and configs from Google Drive
         self.cached_download_from_drive()
