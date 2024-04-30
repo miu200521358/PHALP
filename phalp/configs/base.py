@@ -126,7 +126,7 @@ class ExtraConfig:
 @dataclass
 class FullConfig:
     seed: int = 42
-    track_dataset: str = "demo"
+    track_dataset: str = "output"
     device: str = "cuda"
     base_tracker: str = "PHALP"
     train: bool = False
