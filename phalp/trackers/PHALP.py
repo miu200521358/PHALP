@@ -180,7 +180,7 @@ class PHALP(nn.Module):
             for t_, frame_name in progress_bar(enumerate(list_of_frames), description="Tracking : " + self.cfg.video_seq, total=len(list_of_frames), disable=False):
                 
                 image_frame               = self.io_manager.read_frame(frame_name)
-                if not image_frame.any():
+                if image_frame is None:
                     break
                 img_height, img_width, _  = image_frame.shape
                 new_image_size            = max(img_height, img_width)
