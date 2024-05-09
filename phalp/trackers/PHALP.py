@@ -33,7 +33,6 @@ from phalp.utils.utils_detectron2 import (DefaultPredictor_Lazy,
                                           DefaultPredictor_with_RPN)
 from phalp.utils.utils_download import cache_url
 from phalp.visualize.postprocessor import Postprocessor
-from phalp.visualize.visualizer import Visualizer
 
 log = get_pylogger(__name__)
 
