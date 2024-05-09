@@ -5,7 +5,7 @@ from typing import Dict, Optional
 import hydra
 from omegaconf import MISSING
 
-CACHE_DIR = "cache"  # None if the variable does not exist
+CACHE_DIR = "./cache"  # None if the variable does not exist
 
 @dataclass
 class VideoConfig:
