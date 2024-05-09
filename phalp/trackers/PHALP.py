@@ -644,6 +644,8 @@ class PHALP(nn.Module):
         :param url: the URL of the file to download
         :param path: the path to save the file to
         """
+
+        print("CACHE_DIR: ${CACHE_DIR}")
         
         os.makedirs(os.path.join(CACHE_DIR, "phalp"), exist_ok=True)
         os.makedirs(os.path.join(CACHE_DIR, "phalp/3D"), exist_ok=True)
