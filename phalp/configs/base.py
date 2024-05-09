@@ -10,7 +10,7 @@ CACHE_DIR = os.path.join(os.environ.get("HOME"), ".cache")  # None if the variab
 @dataclass
 class VideoConfig:
     source: str = MISSING
-    output_dir: str = 'outputs/'
+    output_dir: str = ''
     extract_video: bool = True
     base_path: Optional[str] = None
     start_frame: int = -1
