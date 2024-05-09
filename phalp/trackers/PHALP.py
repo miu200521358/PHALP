@@ -34,16 +34,12 @@ from phalp.utils.utils_detectron2 import (DefaultPredictor_Lazy,
 from phalp.utils.utils_download import cache_url
 from phalp.visualize.postprocessor import Postprocessor
 
-print("PHALP 01")
-
 log = get_pylogger(__name__)
 
 class PHALP(nn.Module):
 
     def __init__(self, cfg):
         super(PHALP, self).__init__()
-
-        print("PHALP 02")
 
         self.cfg = cfg
         self.device = torch.device(self.cfg.device)
@@ -692,5 +688,3 @@ class PHALP(nn.Module):
                 # output = gdown.cached_download(url[0], os.path.join(url[1], file_name), fuzzy=True)
                 output = cache_url(url[0], os.path.join(url[1], file_name))
                 assert os.path.exists(os.path.join(url[1], file_name)), f"{output} does not exist"
-
-print("PHALP end")
