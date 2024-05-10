@@ -180,7 +180,7 @@ class PHALP(nn.Module):
                 
                 image_frame               = self.io_manager.read_frame(frame_name)
                 if image_frame is None:
-                    break
+                    continue
                 img_height, img_width, _  = image_frame.shape
                 new_image_size            = max(img_height, img_width)
                 top, left                 = (new_image_size - img_height)//2, (new_image_size - img_width)//2,
