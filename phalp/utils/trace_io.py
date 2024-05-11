@@ -34,7 +34,7 @@ class Trace_IO_Manager(IO_Manager):
             raise Exception(f"Video file does not exist: {self.source_path}")
 
         self.frame_extractor = TraceFrameExtractor(self.source_path)
-        log.info("Number of frames: " + str(self.frame_extractor.n_frames))
+        log.info("All Number of frames: " + str(self.frame_extractor.n_frames))
 
         io_data = {
             "list_of_frames": self.frame_extractor.interpolations,
