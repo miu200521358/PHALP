@@ -115,9 +115,9 @@ class TraceFrameExtractor:
         self.video_path = video_path
         self.vid_cap = cv2.VideoCapture(video_path)
         n_frames = int(self.vid_cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        fps = int(self.vid_cap.get(cv2.CAP_PROP_FPS))
+        fps = float(self.vid_cap.get(cv2.CAP_PROP_FPS))
         # 元のフレームを30fpsで計算し直した場合の1Fごとの該当フレーム数
-        self.interpolations = np.round(np.arange(0, n_frames, fps / 30)).astype(
+        self.interpolations = np.round(np.arange(0, n_frames, fps / 30.0)).astype(
             np.int32
         ).tolist()
         self.n_frames = len(self.interpolations)
@@ -128,7 +128,7 @@ class TraceFrameExtractor:
         ret, frame = self.vid_cap.read()
         if not ret:
             # log.error(f"!!!!! Frame {frame_id} could not be read.")
-            return np.array([])
+            return None
         return np.array(frame)
 
     def get_video_duration(self):
