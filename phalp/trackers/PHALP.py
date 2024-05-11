@@ -152,7 +152,7 @@ class PHALP(nn.Module):
         io_data = self.io_manager.get_frames_from_source()
         list_of_frames, additional_data = io_data['list_of_frames'], io_data['additional_data']
         self.cfg.video_seq = io_data['video_name']
-        pkl_path = self.cfg.video.output_dir + '/results/' + self.cfg.track_dataset + "_" + str(self.cfg.video_seq) + '.pkl'
+        pkl_path = self.cfg.video.output_dir + '/results/' + self.cfg.track_dataset + "_" + str(self.cfg.video_seq) + f'_{max(self.cfg.phalp.start_frame, 0):04d}' + '.pkl'
         video_path = self.cfg.video.output_dir + '/' + self.cfg.base_tracker + '_' + str(self.cfg.video_seq) + '.mp4'
         
         # check if the video is already processed                                  
@@ -170,7 +170,17 @@ class PHALP(nn.Module):
         
         try: 
             
-            list_of_frames = list_of_frames if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:self.cfg.phalp.end_frame]
+            list_of_frames = list_of_frames if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)]
+            if not list_of_frames:
+                log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                log.info("■ End of Frame")
+                log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                
+                with open(os.path.join(self.cfg.video.output_dir, "end_of_frame"), "w") as f:
+                    # 最後までいったら終了フレーム出力して終了
+                    f.write("end of frame")
+                return 0
+
             list_of_shots = self.get_list_of_shots(list_of_frames)
             
             tracked_frames = []
