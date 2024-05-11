@@ -188,7 +188,7 @@ class PHALP(nn.Module):
             tracked_frames = []
             final_visuals_dic = {}
             
-            for t_, frame_name in tqdm(enumerate(list_of_frames), desc="Tracking : " + self.cfg.video_seq, total=(end_frame+1-self.cfg.phalp.start_frame)):
+            for t_, frame_name in tqdm(enumerate(list_of_frames), desc="Tracking : " + self.cfg.video_seq, total=(end_frame-self.cfg.phalp.start_frame)):
                 # fpsによってframe_nameの重複はあるので、frame_idを別途定義
                 frame_id = max(self.cfg.phalp.start_frame, 0) + t_
                 image_frame               = self.io_manager.read_frame(frame_name)
