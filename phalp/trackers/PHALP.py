@@ -2,6 +2,7 @@ import os
 import traceback
 import warnings
 from pathlib import Path
+from tqdm import tqdm
 
 warnings.filterwarnings('ignore')
 
@@ -129,10 +130,10 @@ class PHALP(nn.Module):
     def default_setup(self):
         # create subfolders for saving additional results
         try:
-            os.makedirs(self.cfg.video.output_dir + '/results', exist_ok=True)  
-            os.makedirs(self.cfg.video.output_dir + '/results_tracks', exist_ok=True)  
-            os.makedirs(self.cfg.video.output_dir + '/_TMP', exist_ok=True)  
-            os.makedirs(self.cfg.video.output_dir + '/_DEMO', exist_ok=True)  
+            os.makedirs(self.cfg.video.output_dir, exist_ok=True)  
+            # os.makedirs(self.cfg.video.output_dir + '/results_tracks', exist_ok=True)  
+            # os.makedirs(self.cfg.video.output_dir + '/_TMP', exist_ok=True)  
+            # os.makedirs(self.cfg.video.output_dir + '/_DEMO', exist_ok=True)  
         except: 
             pass
         
@@ -154,7 +155,7 @@ class PHALP(nn.Module):
         self.cfg.video_seq = io_data['video_name']
         pkl_path = self.cfg.video.output_dir + '/' + self.cfg.track_dataset + "_" + str(self.cfg.video_seq) + f'_{max(self.cfg.phalp.start_frame, 0):04d}' + '.pkl'
         video_path = self.cfg.video.output_dir + '/' + self.cfg.base_tracker + '_' + str(self.cfg.video_seq) + '.mp4'
-        
+
         # check if the video is already processed                                  
         if(not(self.cfg.overwrite) and os.path.isfile(pkl_path)): 
             return 0
@@ -166,7 +167,7 @@ class PHALP(nn.Module):
         self.setup_deepsort()
         self.default_setup()
         
-        log.info("Saving tracks at : " + self.cfg.video.output_dir + '/' + str(self.cfg.video_seq))
+        log.info("Saving tracks at : " + pkl_path)
         
         try: 
             
@@ -186,7 +187,7 @@ class PHALP(nn.Module):
             tracked_frames = []
             final_visuals_dic = {}
             
-            for t_, frame_name in progress_bar(enumerate(list_of_frames), description="Tracking : " + self.cfg.video_seq, total=len(list_of_frames), disable=False):
+            for t_, frame_name in tqdm(enumerate(list_of_frames), desc="Tracking : " + self.cfg.video_seq, total=len(list_of_frames)):
                 # fpsによってframe_nameの重複はあるので、frame_idを別途定義
                 frame_id = max(self.cfg.phalp.start_frame, 0) + t_
                 image_frame               = self.io_manager.read_frame(frame_name)
