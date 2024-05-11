@@ -286,20 +286,20 @@ class PHALP(nn.Module):
             print(e)
             print(traceback.format_exc())         
 
-    def get_detections(self, image, frame_name, t_, additional_data=None, measurments=None):
+    def get_detections(self, image, frame_id, t_, additional_data=None, measurments=None):
         
-        if(frame_name in additional_data.keys()):
+        if(frame_id in additional_data.keys()):
             
             img_height, img_width, new_image_size, left, top = measurments
             
-            gt_bbox = additional_data[frame_name]["gt_bbox"]
-            if(len(additional_data[frame_name]["extra_data"]['gt_track_id']) > 0):
-                ground_truth_track_id = additional_data[frame_name]["extra_data"]['gt_track_id']
+            gt_bbox = additional_data[frame_id]["gt_bbox"]
+            if(len(additional_data[frame_id]["extra_data"]['gt_track_id']) > 0):
+                ground_truth_track_id = additional_data[frame_id]["extra_data"]['gt_track_id']
             else:
                 ground_truth_track_id = [-1 for i in range(len(gt_bbox))]
 
-            if(len(additional_data[frame_name]["extra_data"]['gt_class']) > 0):
-                ground_truth_annotations = additional_data[frame_name]["extra_data"]['gt_class']
+            if(len(additional_data[frame_id]["extra_data"]['gt_class']) > 0):
+                ground_truth_annotations = additional_data[frame_id]["extra_data"]['gt_class']
             else:
                 ground_truth_annotations = [[] for i in range(len(gt_bbox))]
                 
