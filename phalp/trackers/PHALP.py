@@ -171,7 +171,7 @@ class PHALP(nn.Module):
         
         try: 
             
-            list_of_frames = list_of_frames if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)]
+            list_of_frames = list_of_frames[:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)] if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)]
             if not list_of_frames:
                 log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 log.info("■ End of Frame")
