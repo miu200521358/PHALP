@@ -170,9 +170,7 @@ class PHALP(nn.Module):
         log.info("Saving tracks at : " + pkl_path)
         
         try: 
-            
-            list_of_frames = list_of_frames[:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)] if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)]
-            if not list_of_frames:
+            if self.cfg.phalp.start_frame == min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]):
                 log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 log.info("■ End of Frame")
                 log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -181,6 +179,8 @@ class PHALP(nn.Module):
                     # 最後までいったら終了フレーム出力して終了
                     f.write("end of frame")
                 return 0
+            
+            list_of_frames = list_of_frames[:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)] if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)]
 
             list_of_shots = self.get_list_of_shots(list_of_frames)
             
