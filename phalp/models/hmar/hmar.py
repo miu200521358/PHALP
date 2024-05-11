@@ -36,7 +36,10 @@ class HMAR(nn.Module):
         self.texture_head    = TextureHead(self.uv_sampler, self.cfg, img_H=img_H, img_W=img_W)
         self.encoding_head   = EncodingHead(cfg=self.cfg, img_H=img_H, img_W=img_W) 
 
-        smpl_cfg             = {k.lower(): v for k,v in dict(cfg.SMPL).items()}
+        if isinstance(cfg.SMPL, dict):
+            smpl_cfg             = {k.lower(): v for k,v in dict(cfg.SMPL).items()}
+        else:
+            smpl_cfg             = {k.lower(): v for k,v in dict(cfg.SMPL.__dict__).items()}
         self.smpl            = SMPL(**smpl_cfg)
         
         self.smpl_head       = SMPLHead(cfg, 
@@ -112,7 +115,7 @@ class HMAR(nn.Module):
         dtype                  = pred_cam.dtype
         device                 = pred_cam.device
         focal_length           = self.cfg.EXTRA.FOCAL_LENGTH * torch.ones(batch_size, 2, device=device, dtype=dtype)
- 
+
         smpl_output            = self.smpl(**{k: v.float() for k,v in pred_smpl_params.items()}, pose2rot=False)
         pred_joints            = smpl_output.joints
 
