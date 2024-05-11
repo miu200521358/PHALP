@@ -151,7 +151,7 @@ class PHALP(nn.Module):
         # process the source video and return a list of frames
         # source can be a video file, a youtube link or a image folder
         io_data = self.io_manager.get_frames_from_source()
-        list_of_frames, additional_data = io_data['list_of_frames'], io_data['additional_data']
+        list_of_frames, additional_data, n_frames = io_data['list_of_frames'], io_data['additional_data'], io_data['n_frames']
         self.cfg.video_seq = io_data['video_name']
         pkl_path = self.cfg.video.output_dir + '/' + self.cfg.track_dataset + "_" + str(self.cfg.video_seq) + f'_{max(self.cfg.phalp.start_frame, 0):04d}' + '.pkl'
         video_path = self.cfg.video.output_dir + '/' + self.cfg.base_tracker + '_' + str(self.cfg.video_seq) + '.mp4'
@@ -167,10 +167,11 @@ class PHALP(nn.Module):
         self.setup_deepsort()
         self.default_setup()
         
-        log.info("Saving tracks at : " + pkl_path)
-        
+        end_frame = min(self.cfg.phalp.end_frame, n_frames - 1)
+        log.info(f"Saving tracks at : {pkl_path} ({self.cfg.phalp.start_frame} - {end_frame})")
+
         try: 
-            if self.cfg.phalp.start_frame == min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]):
+            if self.cfg.phalp.start_frame == end_frame:
                 log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
                 log.info("■ End of Frame")
                 log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -180,14 +181,14 @@ class PHALP(nn.Module):
                     f.write("end of frame")
                 return 0
             
-            list_of_frames = list_of_frames[:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)] if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:min(self.cfg.phalp.end_frame, io_data['list_of_frames'][-1]+1)]
+            list_of_frames = list_of_frames[:end_frame+1] if self.cfg.phalp.start_frame==-1 else list_of_frames[self.cfg.phalp.start_frame:end_frame+1]
 
             list_of_shots = self.get_list_of_shots(list_of_frames)
             
             tracked_frames = []
             final_visuals_dic = {}
             
-            for t_, frame_name in tqdm(enumerate(list_of_frames), desc="Tracking : " + self.cfg.video_seq, total=max(list_of_frames)):
+            for t_, frame_name in tqdm(enumerate(list_of_frames), desc="Tracking : " + self.cfg.video_seq, total=(end_frame+1-self.cfg.phalp.start_frame)):
                 # fpsによってframe_nameの重複はあるので、frame_idを別途定義
                 frame_id = max(self.cfg.phalp.start_frame, 0) + t_
                 image_frame               = self.io_manager.read_frame(frame_name)

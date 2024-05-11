@@ -40,6 +40,7 @@ class Trace_IO_Manager(IO_Manager):
             "list_of_frames": self.frame_extractor.interpolations,
             "additional_data": {},
             "video_name": self.video_name,
+            "n_frames": self.frame_extractor.n_frames,
         }
 
         return io_data
