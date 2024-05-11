@@ -280,6 +280,15 @@ class PHALP(nn.Module):
             self.io_manager.close_video()
             if(self.cfg.use_gt): joblib.dump(self.tracker.tracked_cost, self.cfg.video.output_dir + '/' + str(self.cfg.video_seq) + '_' + str(self.cfg.phalp.start_frame) + '_distance.pkl')
             
+            if end_frame == n_frames - 1:
+                log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                log.info("■ End of Frame")
+                log.info("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+                
+                with open(os.path.join(self.cfg.video.output_dir, "end_of_frame"), "w") as f:
+                    # 最後までいったら終了フレーム出力して終了
+                    f.write("end of frame")
+
             return final_visuals_dic, pkl_path
             
         except Exception as e: 
