@@ -2,11 +2,9 @@ import warnings
 
 from torch import nn
 
-from phalp.utils import get_pylogger
 from phalp.models.hmar.hmar import HMAR
 
 warnings.filterwarnings('ignore')
-log = get_pylogger(__name__)
 
 class HMR2018Predictor(nn.Module):
     def __init__(self, cfg) -> None:
